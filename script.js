@@ -42,7 +42,18 @@ function mkSquares (x = 1, y = 1, newSquare) {
    return newSquare
 }
 
+function traverse (pointer, start = [1,1], end = [8,8]) {
+    if (pointer === null) {
+        return -1
+    }
+    console.log(start[0], start[1])
+    console.log(pointer.x, pointer.y)
+    if (pointer.x !== start[0] || pointer.y !== start[1]){
+        upOneRightTwo = traverse(pointer.upOneRightTwo, start, end);
+    }
+}
+
 const myGraph = new root()
 myGraph.root = mkSquares(1, 1);
-console.log(myGraph.root)
-console.log(myGraph.root.upTwoRightOne)
+
+traverse(myGraph.root)
