@@ -39,8 +39,9 @@ class tree {
     }
 
     let mid = Math.floor(array.length /2);
-    let newNode = new node(array[mid], array[mid][0], array[mid][1]);
-    
+    let newSquare = new square(array[mid][0],array[mid][1])
+    let newNode = new node(array[mid], array[mid][0], array[mid][1], '', '', newSquare);
+   
     if (this.root === null){ 
     this.root = newNode;}
 
@@ -55,80 +56,150 @@ class tree {
     return newNode
 }
 
-mkBoard (pointer = this.root, a = null, b = null) {
+mkBoard (pointer = this.root) {
     if (pointer === null){
         return;
     }
     
-    const newSquare = new square(pointer.data[0], pointer.data[1], pointer)
-  
-    {pointer.link = newSquare}
+    let newSquare = pointer.link
     
-  
+    
    
     this.mkBoard(pointer.right);
     this.mkBoard(pointer.left);
+    
+    
+    newSquare.upOneRightTwo = this.linkElements(this.root, newSquare.x + 1, newSquare.y + 2, newSquare)
+    newSquare.upOneLeftTwo = this.linkElements(this.root, newSquare.x + 1, newSquare.y - 2, newSquare)
+    newSquare.upTwoLeftOne = this.linkElements(this.root, newSquare.x + 2, newSquare.y - 1, newSquare)
+    newSquare.upTwoRightOne = this.linkElements(this.root, newSquare.x + 2, newSquare.y + 1, newSquare)
+    console.log(newSquare.x, newSquare.y)
+    newSquare.downOneLeftTwo = this.linkElements(this.root, newSquare.x - 1, newSquare.y - 2, newSquare)
+    newSquare.downTwoLeftOne = this.linkElements(this.root, newSquare.x - 2, newSquare.y - 1, newSquare)
+    newSquare.downOneRightTwo = this.linkElements(this.root, newSquare.x - 1, newSquare.y + 2, newSquare)
+    newSquare.downTwoRightOne = this.linkElements(this.root, newSquare.x - 2, newSquare.y + 1, newSquare)
 
-    newSquare.upOneRightTwo = this.linkElements(this.root, newSquare.x + 1, newSquare.y + 2)
-    newSquare.downOneLeftTwo = this.linkElements(this.root, newSquare.x - 1, newSquare.y - 2)
-    newSquare.upTwoRightOne = this.linkElements(this.root, newSquare.x + 2, newSquare.y + 1)
-    newSquare.downTwoLeftOne = this.linkElements(this.root, newSquare.x - 2, newSquare.y - 1)
-    newSquare.upOneLeftTwo = this.linkElements(this.root, newSquare.x + 1, newSquare.y - 2)
-    newSquare.downOneRightTwo = this.linkElements(this.root, newSquare.x - 1, newSquare.y + 2)
-    newSquare.upTwoLeftOne = this.linkElements(this.root, newSquare.x + 2, newSquare.y - 1)
-    newSquare.downTwoRightOne = this.linkElements(this.root, newSquare.x - 2, newSquare.y + 1)
+   // console.log('board', newSquare)
+   
 }
     
-linkElements(pointer, a, b) {
+linkElements(pointer, a, b, newSquare) {
    
-  
+  //  console.log('start', newSquare, a, b)
     
-    try {while(pointer !== null  && pointer.x !== a, pointer.y !== b) {
-     
-           
+   while(pointer !== null) {
+            //console.log('runs', a, b)
+
+              
             if (a > 8 ||a < 1 || b > 8 || b < 1){
              pointer = null
-             break
+             //console.log('broke')
+             return null
             }
  
              
              if(a === pointer.x) {
-                 if(b === pointer.y)
-                 break
+                 if(b === pointer.y) {
+                 //console.log('completes', pointer['link'])
+                 return  pointer.link
+                }
                  else if(b > pointer.y) {
+                    //console.log('a equals but b greater')
                  pointer = pointer.right;
-                
                      continue}
+                else {
                  pointer = pointer.left
-                 
-                 continue
+                 //console.log('a = but b is <')
+                 continue}
              }
          
              else if (a > pointer.x) {
              pointer = pointer.right;
-           
+             //console.log('a >')
              continue
              }
-     
+             
+             else {//console.log('a <')
              pointer = pointer.left
              
-                 continue
+                 continue}
              
-             
-         } } catch{console.log('broke')}
-                
-         return pointer !== null ? pointer.link : null
+            }
+          
+      
 }
 
- movDistance (start, end, pointer = this.root.link) {
+findLinkFromTree (start, pointer = this.root) {
+    if (pointer === null) {
+        return
+    };
 
-    try{if (pointer.x === start[0] && pointer.y === start[1]){
-        console.log('runs searc ')
- }catch{console.log('fails')}
-}
+    if (pointer.constructor.name === 'node') {
+        console.log(pointer)
+        if (pointer.x !== start[0] || pointer.y !== start[1]) {
+        this.movDistance(start,pointer.left)
+        this.movDistance(start, pointer.right)}
+        else {
+            console.log(pointer.link)
+        }
+    return    
+    }
 }
 
+ movDistance (start, end, pointer = null, runCap = 0, touched = []) {
   
+    if (pointer === null) {
+        return
+    };
+
+    if(runCap === 6) {
+        console.log('max runs exceeded', touched)
+        return null 
+       };
+    
+    
+    if (pointer.constructor.name === 'node') {
+        if (pointer.x !== start[0] || pointer.y !== start[1]) {
+        this.movDistance(start, end, pointer.left, runCap)
+        this.movDistance(start, end, pointer.right, runCap)}
+        else {
+            console.log('start set', pointer)
+            this.movDistance(start, end, pointer.link)
+            
+            return
+        }
+    return    
+    }
+    
+    
+
+    if(pointer.x !== end[0] || pointer.y !== end[1]){ 
+        
+        console.log('runs', pointer)
+        touched.unshift([pointer.x, pointer.y])
+        runCap++
+
+        if(new Set(touched.size) !== touched.length){
+            console.log('dupilicate', touched)
+            return null
+        }   ;
+        this.movDistance(start, end, pointer.upOneRightTwo, runCap, touched);
+        this.movDistance(start, end, pointer.downOneLeftTwo, runCap, touched);
+        this.movDistance(start, end, pointer.upTwoRightOne, runCap, touched);
+        this.movDistance(start, end, pointer.upTwoRightOne, runCap, touched);
+        this.movDistance(start, end, pointer.downTwoLeftOne, runCap, touched);
+        this.movDistance(start, end, pointer.upOneLeftTwo, runCap, touched);
+        this.movDistance(start, end, pointer.downOneRightTwo, runCap, touched);
+        this.movDistance(start, end, pointer.upTwoLeftOne, runCap, touched);
+        this.movDistance(start, end, pointer.downTwoRightOne, runCap, touched);
+        
+        }
+        else {
+        console.log('end reached', pointer)
+            return}
+}
+    }
+
 
 
 
@@ -146,5 +217,7 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
   }
  prettyPrint(myTree.root)
   
-  const myBoard = myTree.mkBoard();
-  myTree.movDistance([5,1], [1, 1])
+  myTree.mkBoard();
+  console.log(myTree.root.right.right)
+  //myTree.findLinkFromTree([8,5])
+    myTree.movDistance([7,7], [1, 1], myTree.root)
