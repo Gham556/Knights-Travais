@@ -146,24 +146,18 @@ findLinkFromTree (start, pointer = this.root) {
     }
 }
 
- movDistance (start, end, pointer = null, runCap = 0, touched = []) {
-  
+ movDistance (start, end, pointer = null, runCap = 0, touched = [], array = []) {
+    
     if (pointer === null) {
-        return
-    };
+        return -1
+    }; 
+       
 
-    if(runCap === 6) {
-        console.log('max runs exceeded', touched)
-        return null 
-       };
-    
-    
     if (pointer.constructor.name === 'node') {
         if (pointer.x !== start[0] || pointer.y !== start[1]) {
         this.movDistance(start, end, pointer.left, runCap)
         this.movDistance(start, end, pointer.right, runCap)}
         else {
-            console.log('start set', pointer)
             this.movDistance(start, end, pointer.link)
             
             return
@@ -171,34 +165,68 @@ findLinkFromTree (start, pointer = this.root) {
     return    
     }
     
-    
+    runCap++
+    touched.push([pointer.x, pointer.y])
+    console.log(pointer)
+   
+    if (pointer.x === end[0]){
+        if(pointer.y === end[1]) {
+            return +1
+        }
+    }
 
-    if(pointer.x !== end[0] || pointer.y !== end[1]){ 
-        
-        console.log('runs', pointer)
-        touched.unshift([pointer.x, pointer.y])
-        runCap++
 
-        if(new Set(touched.size) !== touched.length){
-            console.log('dupilicate', touched)
-            return null
-        }   ;
-        this.movDistance(start, end, pointer.upOneRightTwo, runCap, touched);
-        this.movDistance(start, end, pointer.downOneLeftTwo, runCap, touched);
-        this.movDistance(start, end, pointer.upTwoRightOne, runCap, touched);
-        this.movDistance(start, end, pointer.upTwoRightOne, runCap, touched);
-        this.movDistance(start, end, pointer.downTwoLeftOne, runCap, touched);
-        this.movDistance(start, end, pointer.upOneLeftTwo, runCap, touched);
-        this.movDistance(start, end, pointer.downOneRightTwo, runCap, touched);
-        this.movDistance(start, end, pointer.upTwoLeftOne, runCap, touched);
-        this.movDistance(start, end, pointer.downTwoRightOne, runCap, touched);
-        
+    if (pointer.x < end[0]) {
+        if (pointer.y < end[1]) {
+        let move1 = this.movDistance(start, end, pointer.upOneRightTwo, runCap, touched);
+        let move2 = this.movDistance(start, end, pointer.upTwoRightOne, runCap, touched);
+            if (move1 > move2) {
+                console.log('move1', move1)
+                return move1 +1
+            }
+            else{
+                console.log('move2', move2)
+                return move2 +1
+            }
         }
         else {
-        console.log('end reached', pointer)
-            return}
-}
+        let move3 = this.movDistance(start, end, pointer.upOneLeftTwo, runCap, touched);
+        let move4 = this.movDistance(start, end, pointer.upTwoLeftOne, runCap, touched);
+            if(move3 > move4) {
+                return move3 +1
+            }
+            else{
+                return move4 +1
+            }
     }
+    }
+
+    else  {
+        if (pointer.y < end[1]) {
+        let move7 = this.movDistance(start, end, pointer.downOneRightTwo, runCap, touched);
+        let move8 = this.movDistance(start, end, pointer.downTwoRightOne, runCap, touched);
+            if(move7 > move8) {
+                return move7 +1
+            }
+            else {
+                return move8+1
+            }
+        }
+        else {
+        let move9 = this.movDistance(start, end, pointer.downOneLeftTwo, runCap, touched);
+        let move10 = this.movDistance(start, end, pointer.downTwoLeftOne, runCap, touched);
+            if(move9 > move10) {
+                console.log('move9', move9)
+                return move9 + 1
+            }
+            else {
+                console.log('move10', move10)
+                return move10 +1
+            }
+        }
+    }   
+       
+}}
 
 
 
@@ -220,4 +248,4 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
   myTree.mkBoard();
   console.log(myTree.root.right.right)
   //myTree.findLinkFromTree([8,5])
-    myTree.movDistance([7,7], [1, 1], myTree.root)
+   console.log(myTree.movDistance([2, 3], [1, 1], myTree.root));
