@@ -133,100 +133,115 @@ findLinkFromTree (start, pointer = this.root) {
     if (pointer === null) {
         return
     };
-
-    if (pointer.constructor.name === 'node') {
-        console.log(pointer)
-        if (pointer.x !== start[0] || pointer.y !== start[1]) {
-        this.movDistance(start,pointer.left)
-        this.movDistance(start, pointer.right)}
-        else {
-            console.log(pointer.link)
-        }
-    return    
-    }
-}
-
- movDistance (start, end, pointer = null, runCap = 0, touched = [], array = []) {
     
-    if (pointer === null) {
-        return -1
-    }; 
-       
+    console.log(pointer.constructor.name)
+   
+        
 
-    if (pointer.constructor.name === 'node') {
-        if (pointer.x !== start[0] || pointer.y !== start[1]) {
-        this.movDistance(start, end, pointer.left, runCap)
-        this.movDistance(start, end, pointer.right, runCap)}
-        else {
-            this.movDistance(start, end, pointer.link)
-            
-            return
-        }
-    return    
     }
+
+ movDistance (start, end, pointer = null, runCap = 0, move1Arr = [], move2Arr = [], move3Arr = [], move4Arr = [], move7Arr = [], move8Arr = [], move9Arr = [], move10Arr = []) {
+    
+    console.log((pointer) + (pointer))
+
+    if (pointer === null) {
+        return +1
+    }; 
+    if (runCap === 6) {
+        return +1
+    }
+       
+    debugger;
+
+    while (pointer.constructor.name === 'node') {
+        if (pointer.x === start[0]) {
+            if (pointer.y === start[1]) {
+            pointer = pointer.link;}
+            else if(start[1] > pointer.y) {
+                
+             pointer = pointer.right;
+                 continue}
+            else {
+             pointer = pointer.left
+             continue}}
+        else if (start[0] > pointer.x) {
+                pointer = pointer.right;
+                
+                continue
+                }
+                
+                else {
+                pointer = pointer.left
+                
+                    continue}
+        }
     
     runCap++
-    touched.push([pointer.x, pointer.y])
-    console.log(pointer)
+
    
     if (pointer.x === end[0]){
         if(pointer.y === end[1]) {
-            return +1
+            
+            return 0
         }
-    }
+        }
 
-
-    if (pointer.x < end[0]) {
-        if (pointer.y < end[1]) {
-        let move1 = this.movDistance(start, end, pointer.upOneRightTwo, runCap, touched);
-        let move2 = this.movDistance(start, end, pointer.upTwoRightOne, runCap, touched);
-            if (move1 > move2) {
-                console.log('move1', move1)
-                return move1 +1
+        debugger;
+    if (pointer.x <= end[0]) {
+        if (pointer.y <= end[1]) {
+         
+        let move1 = this.movDistance(start, end, pointer.upOneRightTwo, runCap, move1Arr, move2Arr, move3Arr, move4Arr, move7Arr, move8Arr, move9Arr, move10Arr);
+        let move2 = this.movDistance(start, end, pointer.upTwoRightOne, runCap,move1Arr, move2Arr, move3Arr, move4Arr, move7Arr, move8Arr, move9Arr, move10Arr);
+            if (move1 < 0) {
+                if(move2 <= 0) {
+                    return Math.max(move1, move2) - 1
+                }
+                return move1 -1
             }
-            else{
-                console.log('move2', move2)
-                return move2 +1
-            }
+            else {
+            return move2 -1           }
         }
         else {
-        let move3 = this.movDistance(start, end, pointer.upOneLeftTwo, runCap, touched);
-        let move4 = this.movDistance(start, end, pointer.upTwoLeftOne, runCap, touched);
-            if(move3 > move4) {
-                return move3 +1
+           
+        let move3 = this.movDistance(start, end, pointer.upOneLeftTwo, runCap, move1Arr, move2Arr, move3Arr, move4Arr, move7Arr, move8Arr, move9Arr, move10Arr);
+        let move4 = this.movDistance(start, end, pointer.upTwoLeftOne, runCap, move1Arr, move2Arr, move3Arr, move4Arr, move7Arr, move8Arr, move9Arr, move10Arr);
+        if (move3 <= 0) {
+            if(move4 <= 0) {
+                return Math.max(move3, move4) - 1
             }
-            else{
-                return move4 +1
-            }
+            return move3 -1
+        }
+        else {
+        return move4 -1           }
     }
     }
-
     else  {
-        if (pointer.y < end[1]) {
-        let move7 = this.movDistance(start, end, pointer.downOneRightTwo, runCap, touched);
-        let move8 = this.movDistance(start, end, pointer.downTwoRightOne, runCap, touched);
-            if(move7 > move8) {
-                return move7 +1
+        if (pointer.y <= end[1]) {
+        let move7 = this.movDistance(start, end, pointer.downOneRightTwo, runCap, move1Arr, move2Arr, move3Arr, move4Arr, move7Arr, move8Arr, move9Arr, move10Arr);
+        let move8 = this.movDistance(start, end, pointer.downTwoRightOne, runCap, move1Arr, move2Arr, move3Arr, move4Arr, move7Arr, move8Arr, move9Arr, move10Arr);
+                if (move7 <= 0) {
+                    if(move8 <= 0) {
+                        return Math.max(move7, move8) - 1
+                    }
+                    return move7 -1
+                }
+                else {
+                return move8 -1           }
             }
-            else {
-                return move8+1
+        else {
+        let move9 = this.movDistance(start, end, pointer.downOneLeftTwo, runCap, move1Arr, move2Arr, move3Arr, move4Arr, move7Arr, move8Arr, move9Arr, move10Arr);
+        let move10 = this.movDistance(start, end, pointer.downTwoLeftOne, runCap, move1Arr, move2Arr, move3Arr, move4Arr, move7Arr, move8Arr, move9Arr, move10Arr);
+        if (move9 <= 0) {
+            if(move10 <= 0) {
+                return Math.max(move9, move10) - 1
             }
+            return move9 -1
         }
         else {
-        let move9 = this.movDistance(start, end, pointer.downOneLeftTwo, runCap, touched);
-        let move10 = this.movDistance(start, end, pointer.downTwoLeftOne, runCap, touched);
-            if(move9 > move10) {
-                console.log('move9', move9)
-                return move9 + 1
-            }
-            else {
-                console.log('move10', move10)
-                return move10 +1
-            }
-        }
+        return move10 -1           }
     }   
        
-}}
+    }}}
 
 
 
@@ -248,4 +263,4 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
   myTree.mkBoard();
   console.log(myTree.root.right.right)
   //myTree.findLinkFromTree([8,5])
-   console.log(myTree.movDistance([2, 3], [1, 1], myTree.root));
+   console.log(myTree.movDistance([3, 3], [3, 4], myTree.root));
