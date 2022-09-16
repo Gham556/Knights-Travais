@@ -140,25 +140,19 @@ findLinkFromTree (start, pointer = this.root) {
 
     }
 
- movDistance (start, end, pointer = null, runCap = 0, move1Arr = [], move2Arr = [], move3Arr = [], move4Arr = [], move7Arr = [], move8Arr = [], move9Arr = [], move10Arr = []) {
+ movDistance (start, end, pointer = null, runCap = 0, move1 = [], move2 = [], move3 = [], move4 = [], move7 = [], move8 = [], move9 = [], move10 = []) {
     
-    console.log((pointer) + (pointer))
 
     if (pointer === null) {
-        return +1
+        return []
     }; 
-    if (pointer.x === end[0]){
-        if(pointer.y === end[1]) {
-            
-            return -1
-        }
-        }
-
-    if (runCap === 7) {
-        return +1
+    if (pointer.x === end[0] && pointer.y === end[1]){
+            return [`[${pointer.x}:${pointer.y}]`]
     }
        
-    debugger;
+   if (runCap === 7) {
+    return []
+   }
 
     while (pointer.constructor.name === 'node') {
         if (pointer.x === start[0]) {
@@ -187,92 +181,109 @@ findLinkFromTree (start, pointer = this.root) {
 
    
   
-        debugger;
-    if (pointer.x < end[0]) {
+        
+    if (pointer.x <= end[0]) {
         if (pointer.y < end[1]) {
          
-        let move1 = this.movDistance(start, end, pointer.upOneRightTwo, runCap, move1Arr, move2Arr, move3Arr, move4Arr, move7Arr, move8Arr, move9Arr, move10Arr);
-        let move2 = this.movDistance(start, end, pointer.upTwoRightOne, runCap,move1Arr, move2Arr, move3Arr, move4Arr, move7Arr, move8Arr, move9Arr, move10Arr);
-            if (move1 < 0) {
-                if(move2 <= 0) {
-                    move1Arr.shift()
-                    move1Arr.unshift(pointer)
-                    console.log(move1Arr)
-                    return Math.max(move1, move2) - 1
+         move1 = this.movDistance(start, end, pointer.upOneRightTwo, runCap);
+         move2 = this.movDistance(start, end, pointer.upTwoRightOne, runCap);
+            if (move1.length >= 1) {
+                if (move2.length >= 1){
+                if(move2.length <= move1.length) {
+                    move2.unshift(`[${pointer.x}:${pointer.y}]`)
+                    return move2 
                 }
                 else {
-                move1Arr.unshift(pointer)
-                console.log(move1Arr)
-                return move1 -1
+                move1.unshift(`[${pointer.x}:${pointer.y}]`)
+                return move1 
                 }
             }
-            else if (move2 < 0) {
-                move1Arr.unshift(pointer)
-                console.log(move1Arr)
-            return move2 -1           }
-            return 
+                else {
+                    move1.unshift(`[${pointer.x}:${pointer.y}]`)
+                return move1 
+                }}
+            else if (move2.length >= 1) {
+                move2.unshift(`[${pointer.x}:${pointer.y}]`)
+            return move2            }
+            return []
         }
         else {
            
-        let move3 = this.movDistance(start, end, pointer.upOneLeftTwo, runCap, move1Arr, move2Arr, move3Arr, move4Arr, move7Arr, move8Arr, move9Arr, move10Arr);
-        let move4 = this.movDistance(start, end, pointer.upTwoLeftOne, runCap, move1Arr, move2Arr, move3Arr, move4Arr, move7Arr, move8Arr, move9Arr, move10Arr);
-        if (move3 <= 0) {
-            if(move4 <= 0) {
-                move1Arr.shift()
-                move1Arr.unshift(pointer)
-                return Math.max(move3, move4) - 1
+         move3 = this.movDistance(start, end, pointer.upOneLeftTwo, runCap);
+         move4 = this.movDistance(start, end, pointer.upTwoLeftOne, runCap);
+        if (move3.length >= 1) {
+            if (move4.length >= 1){
+            if(move4.length <= move3.length) {
+                move4.unshift(`[${pointer.x}:${pointer.y}]`)
+                return move4 
             }
             else {
-                move1Arr.unshift(pointer)
-            return move3 -1
+                move3.unshift(`[${pointer.x}:${pointer.y}]`)
+            return move3 
+            }}
+            else {
+                move3.unshift(`[${pointer.x}:${pointer.y}]`)
+            return move3 
             }
         }
-        else if (move4 < 0) {
-            move1Arr.unshift(pointer)
-        return move4 -1           }
-        return 
+        else if (move4,length >= 1) {
+            move4.unshift(`[${pointer.x}:${pointer.y}]`)
+        return move4           }
+        return []
     }
     }
     else  {
-        if (pointer.y < end[1]) {
-        let move7 = this.movDistance(start, end, pointer.downOneRightTwo, runCap, move1Arr, move2Arr, move3Arr, move4Arr, move7Arr, move8Arr, move9Arr, move10Arr);
-        let move8 = this.movDistance(start, end, pointer.downTwoRightOne, runCap, move1Arr, move2Arr, move3Arr, move4Arr, move7Arr, move8Arr, move9Arr, move10Arr);
-                if (move7 < 0) {
-                    if(move8 < 0) {
-                        move1Arr.shift()
-                        move1Arr.unshift(pointer)
-                        return Math.max(move7, move8) - 1
+        if (pointer.y <= end[1]) {
+         move7 = this.movDistance(start, end, pointer.downOneRightTwo, runCap);
+         move8 = this.movDistance(start, end, pointer.downTwoRightOne, runCap);
+                if (move7.length >= 1) { 
+                    if (move8.length >= 1) {
+                    if(move8.length <= move7.length) {
+                        move8.unshift(`[${pointer.x}:${pointer.y}]`)
+                        return move8
                     }
                     else {
-                        move1Arr.unshift(pointer)
-                    return move7 -1
+                        move7.unshift(`[${pointer.x}:${pointer.y}]`)
+                    return move7
                     }
                 }
-                else if (move8 < 0){
-                    move1Arr.unshift(pointer)
-                return move8 -1           }
-            return     
+                else {
+                    move7.unshift(`[${pointer.x}:${pointer.y}]`)
+                    return move7
+                }
+                }
+                else if (move8.length >= 1){
+                    move8.unshift(`[${pointer.x}:${pointer.y}]`)
+                return move8            }  
+                return []
             }
         else {
-        let move9 = this.movDistance(start, end, pointer.downOneLeftTwo, runCap, move1Arr, move2Arr, move3Arr, move4Arr, move7Arr, move8Arr, move9Arr, move10Arr);
-        let move10 = this.movDistance(start, end, pointer.downTwoLeftOne, runCap, move1Arr, move2Arr, move3Arr, move4Arr, move7Arr, move8Arr, move9Arr, move10Arr);
-        if (move9 < 0) {
-            if(move10 < 0) {
-                move1Arr.shift()
-                move1Arr.unshift(pointer)
-                return Math.max(move9, move10) - 1
+         move9 = this.movDistance(start, end, pointer.downOneLeftTwo, runCap);
+         move10 = this.movDistance(start, end, pointer.downTwoLeftOne, runCap);
+        if (move9.length >= 1) {
+            if (move10.length >= 1){
+            if(move9.length <= move10.length) {
+                move9.unshift(`[${pointer.x}:${pointer.y}]`)
+                return move9 
             }
             else {
-                move1Arr.unshift(pointer)
-            return move9 -1
+                move10.unshift(`[${pointer.x}:${pointer.y}]`)
+            return move10
             }
         }
         else {
-            move1Arr.unshift(pointer)
-        return move10 -1           }
+            move9.unshift(`[${pointer.x}:${pointer.y}]`)
+            return move9
+        }
+        }
+        else if (move10.length >= 1){
+            move10.unshift(`[${pointer.x}:${pointer.y}]`)
+        return move10            }
+        return []
     }   
        
-    }}}
+    }
+}}
 
 
 
@@ -294,4 +305,6 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
   myTree.mkBoard();
   console.log(myTree.root.right.right)
   //myTree.findLinkFromTree([8,5])
-   console.log(myTree.movDistance([3, 3], [3, 4], myTree.root));
+   let x = Array.from(myTree.movDistance([6, 2], [2, 8], myTree.root));
+   let y = x.length
+   console.log('Your fastest route is ' + x.join() + ` in ${y} moves`)
