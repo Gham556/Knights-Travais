@@ -147,7 +147,14 @@ findLinkFromTree (start, pointer = this.root) {
     if (pointer === null) {
         return +1
     }; 
-    if (runCap === 6) {
+    if (pointer.x === end[0]){
+        if(pointer.y === end[1]) {
+            
+            return -1
+        }
+        }
+
+    if (runCap === 7) {
         return +1
     }
        
@@ -179,27 +186,31 @@ findLinkFromTree (start, pointer = this.root) {
     runCap++
 
    
-    if (pointer.x === end[0]){
-        if(pointer.y === end[1]) {
-            
-            return 0
-        }
-        }
-
+  
         debugger;
-    if (pointer.x <= end[0]) {
-        if (pointer.y <= end[1]) {
+    if (pointer.x < end[0]) {
+        if (pointer.y < end[1]) {
          
         let move1 = this.movDistance(start, end, pointer.upOneRightTwo, runCap, move1Arr, move2Arr, move3Arr, move4Arr, move7Arr, move8Arr, move9Arr, move10Arr);
         let move2 = this.movDistance(start, end, pointer.upTwoRightOne, runCap,move1Arr, move2Arr, move3Arr, move4Arr, move7Arr, move8Arr, move9Arr, move10Arr);
             if (move1 < 0) {
                 if(move2 <= 0) {
+                    move1Arr.shift()
+                    move1Arr.unshift(pointer)
+                    console.log(move1Arr)
                     return Math.max(move1, move2) - 1
                 }
+                else {
+                move1Arr.unshift(pointer)
+                console.log(move1Arr)
                 return move1 -1
+                }
             }
-            else {
+            else if (move2 < 0) {
+                move1Arr.unshift(pointer)
+                console.log(move1Arr)
             return move2 -1           }
+            return 
         }
         else {
            
@@ -207,37 +218,57 @@ findLinkFromTree (start, pointer = this.root) {
         let move4 = this.movDistance(start, end, pointer.upTwoLeftOne, runCap, move1Arr, move2Arr, move3Arr, move4Arr, move7Arr, move8Arr, move9Arr, move10Arr);
         if (move3 <= 0) {
             if(move4 <= 0) {
+                move1Arr.shift()
+                move1Arr.unshift(pointer)
                 return Math.max(move3, move4) - 1
             }
+            else {
+                move1Arr.unshift(pointer)
             return move3 -1
+            }
         }
-        else {
+        else if (move4 < 0) {
+            move1Arr.unshift(pointer)
         return move4 -1           }
+        return 
     }
     }
     else  {
-        if (pointer.y <= end[1]) {
+        if (pointer.y < end[1]) {
         let move7 = this.movDistance(start, end, pointer.downOneRightTwo, runCap, move1Arr, move2Arr, move3Arr, move4Arr, move7Arr, move8Arr, move9Arr, move10Arr);
         let move8 = this.movDistance(start, end, pointer.downTwoRightOne, runCap, move1Arr, move2Arr, move3Arr, move4Arr, move7Arr, move8Arr, move9Arr, move10Arr);
-                if (move7 <= 0) {
-                    if(move8 <= 0) {
+                if (move7 < 0) {
+                    if(move8 < 0) {
+                        move1Arr.shift()
+                        move1Arr.unshift(pointer)
                         return Math.max(move7, move8) - 1
                     }
+                    else {
+                        move1Arr.unshift(pointer)
                     return move7 -1
+                    }
                 }
-                else {
+                else if (move8 < 0){
+                    move1Arr.unshift(pointer)
                 return move8 -1           }
+            return     
             }
         else {
         let move9 = this.movDistance(start, end, pointer.downOneLeftTwo, runCap, move1Arr, move2Arr, move3Arr, move4Arr, move7Arr, move8Arr, move9Arr, move10Arr);
         let move10 = this.movDistance(start, end, pointer.downTwoLeftOne, runCap, move1Arr, move2Arr, move3Arr, move4Arr, move7Arr, move8Arr, move9Arr, move10Arr);
-        if (move9 <= 0) {
-            if(move10 <= 0) {
+        if (move9 < 0) {
+            if(move10 < 0) {
+                move1Arr.shift()
+                move1Arr.unshift(pointer)
                 return Math.max(move9, move10) - 1
             }
+            else {
+                move1Arr.unshift(pointer)
             return move9 -1
+            }
         }
         else {
+            move1Arr.unshift(pointer)
         return move10 -1           }
     }   
        
